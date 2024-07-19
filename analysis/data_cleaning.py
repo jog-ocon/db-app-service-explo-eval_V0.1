@@ -1,9 +1,11 @@
 import pandas as pd
 import streamlit as st
 import numpy as np
+from transform import find_sref_batiment_and_next
 
 def clean_join_df(df_eval, df_contributeurs_eval, sref): #its called df_eval here but it can be explo or eval
     pd.set_option('future.no_silent_downcasting', True)
+    
     df_eval['kg éq. CO2 / Unité (de la DE) / Durée de vie bâtiment.1'] = df_eval['kg éq. CO2 / Unité (de la DE) / Durée de vie bâtiment.1'].replace('-', 0)
     # 1. Dtypes management
     # Convert the specified column to numeric, coercing errors to NaN

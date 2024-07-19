@@ -1,3 +1,5 @@
 plotly
 matplotlib
 seaborn
+jellyfish
+openpyxl
