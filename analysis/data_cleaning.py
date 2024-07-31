@@ -109,3 +109,17 @@ def join_dataframes(df_eval, df_explo, key_col='ID-DE', suffix_eval='_eval', suf
 
     return merged_df
 
+def group_and_aggregate(df):
+    # Group by the specified columns and aggregate the other columns
+    grouped_df = df.groupby(['Donnée environnementale (DE)_eval', 'Donnée environnementale (DE)_explo']).agg({
+        'ID-DE_eval': 'first',
+        'ID-DE_explo': 'first',
+        'Lot_eval': 'first',
+        'Lot_explo': 'first',
+        'Quantité_eval': 'sum',
+        'Quantité_explo': 'sum',
+        'GES_divided_by__SREF_eval': 'sum',
+        'GES_divided_by__SREF_explo': 'sum'
+    }).reset_index()
+    
+    return grouped_df
