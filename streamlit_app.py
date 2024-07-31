@@ -141,8 +141,8 @@ elif choice == "Projets comparaison":
                 #getting max values of lots for the y axis scale
             
 
-                filtered_exploration_eval = df_eval[df_eval['Lot'].isin(selected_option_list)]
-                filtered_exploration_explo = df_explo[df_explo['Lot'].isin(selected_option_list)]
+                # filtered_exploration_eval = df_eval[df_eval['Lot'].isin(selected_option_list)]
+                # filtered_exploration_explo = df_explo[df_explo['Lot'].isin(selected_option_list)]
 
                 #
 
@@ -150,9 +150,16 @@ elif choice == "Projets comparaison":
                     #
                 
 
-                filtered_sous_lots_eval_explo = sous_lots_eval_explo[sous_lots_eval_explo['Lot_x'].isin(selected_option_list)]
+                
+                # filtered_sous_lots_eval_explo = sous_lots_eval_explo[sous_lots_eval_explo['Lot_x'].isin(selected_option_list)]
+                filtered_sous_lots_eval_explo = sous_lots_eval_explo[
+                    (sous_lots_eval_explo['Lot_x'].isin(selected_option_list)) |
+                    (sous_lots_eval_explo['Lot_y'].isin(selected_option_list))
+                ]
 
 
+
+                st.write(sous_lots_eval_explo)
                 #Making the stacked barplot from the choices
                 transform_and_plot_stacked_bar(filtered_sous_lots_eval_explo, 'Sous-lot', ['eval', 'explo'], color_palette='Vivid')
                 
