@@ -11,7 +11,7 @@ import plotly.graph_objs as go
 
 from utility_functions import wrap_labels, count_repeated_elements
 
-def transform_and_plot_stacked_bar(df, lot_col, value_cols, y_axis_range=None):
+def transform_and_plot_stacked_bar(df, lot_col, value_cols, y_axis_range=None, color_palette='Antique'):
     """
     Transforms the DataFrame and creates stacked bar plots using Plotly.
 
@@ -43,7 +43,7 @@ def transform_and_plot_stacked_bar(df, lot_col, value_cols, y_axis_range=None):
 
 
     # Create a stacked bar plot using Plotly
-    fig = px.bar(df_melted, x='type_prod', y='Value', color='Lot', color_discrete_sequence=px.colors.qualitative.Antique,
+    fig = px.bar(df_melted, x='type_prod', y='Value', color='Lot',color_discrete_sequence=getattr(px.colors.qualitative, color_palette),
                 #  title='GES resultats comparaisons',
                  labels={'Value': 'kg éq. CO2/m²', 'type_prod': ''},
                  height=900)

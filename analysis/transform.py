@@ -8,9 +8,16 @@ import re
 from utility_functions import sort_alfanumeric, emphasize_numbers
 
 
-def group_and_calculate_percentage(df, group_by_col, sum_col, percentage_col_name='Percentage'):
-    # Group by the specified column and sum the specified column
-    grouped_df = df.groupby(group_by_col)[sum_col].sum().reset_index()
+def group_and_calculate_percentage(df, group_by_col, sum_col, col=None, percentage_col_name='Percentage'):
+    # Define the aggregation dictionary
+    agg_dict = {sum_col: 'sum'}
+    
+    # If col is provided, include it in the aggregation dictionary
+    if col:
+        agg_dict[col] = 'first'
+    
+    # Group by the specified columns and aggregate
+    grouped_df = df.groupby(group_by_col).agg(agg_dict).reset_index()
 
     # Calculate the total sum for the percentage calculation
     total_sum = grouped_df[sum_col].sum()
@@ -121,7 +128,7 @@ def group_and_calculate_percentage_with_names(df, group_by_col, sum_col, names_c
 
     return grouped_df
 
-def join_and_rename_columns(df1, df2): #in case we want to deal with both eval or both explo change this function
+def join_and_rename_columns(df1, df2, lot='Lot'): #in case we want to deal with both eval or both explo change this function
     """
     Joins two DataFrames on the 'lot' column and renames the GES_divided_by__SREF columns to 'eval' and 'explo'.
 
@@ -137,7 +144,7 @@ def join_and_rename_columns(df1, df2): #in case we want to deal with both eval o
     df2_renamed = df2.rename(columns={'GES_divided_by__SREF': 'explo'})
     
     # Merge the DataFrames on the 'lot' column
-    merged_df = pd.merge(df1_renamed, df2_renamed, on='Lot')
+    merged_df = pd.merge(df1_renamed, df2_renamed, on=lot, how='outer')
     
     return merged_df
 
@@ -324,3 +331,20 @@ def find_sref_batiment_and_next(df, n_col):
     if not found:
         print('There is a very serious mistake, contact Jorge by slack urgently')
         return None
+    
+
+def change_column_if_not_in_list(df, check_col, allowed_values, change_col):
+    """
+    Changes the values in `change_col` to None if the corresponding value in `check_col` is not in `allowed_values`.
+
+    Parameters:
+    df (pd.DataFrame): The DataFrame to process.
+    check_col (str): The column to check against `allowed_values`.
+    allowed_values (list): The list of allowed values for `check_col`.
+    change_col (str): The column to change to None if the check fails.
+
+    Returns:
+    pd.DataFrame: The modified DataFrame.
+    """
+    df.loc[~df[check_col].isin(allowed_values), change_col] = None
+    return df
