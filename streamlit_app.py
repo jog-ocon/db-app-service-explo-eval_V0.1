@@ -159,7 +159,7 @@ elif choice == "Projets comparaison":
 
 
 
-                st.write(sous_lots_eval_explo)
+               
                 #Making the stacked barplot from the choices
                 transform_and_plot_stacked_bar(filtered_sous_lots_eval_explo, 'Sous-lot', ['eval', 'explo'], color_palette='Vivid')
                 
